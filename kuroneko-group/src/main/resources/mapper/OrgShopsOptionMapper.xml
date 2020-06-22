@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.crv.vwop.org.shops.dal.mapper.OrgShopsOptionMapper">
+    <resultMap id="BaseResultMap" type="cn.com.crv.vwop.org.shops.dal.entity.OsBizShopInfoDO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="shop_code" jdbcType="VARCHAR" property="shopCode" />
+        <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+        <result column="shop_shortname" jdbcType="VARCHAR" property="shopShortname" />
+        <result column="app_id" jdbcType="VARCHAR" property="appId" />
+        <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
+        <result column="province_value" jdbcType="VARCHAR" property="provinceValue" />
+        <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+        <result column="city_value" jdbcType="VARCHAR" property="cityValue" />
+        <result column="region_id" jdbcType="VARCHAR" property="regionId" />
+        <result column="region_desc" jdbcType="VARCHAR" property="regionDesc" />
+        <result column="biz_cell_code" jdbcType="VARCHAR" property="bizCellCode" />
+        <result column="biz_cell_value" jdbcType="VARCHAR" property="bizCellValue" />
+        <result column="shop_type_code" jdbcType="VARCHAR" property="shopTypeCode" />
+        <result column="shop_type_value" jdbcType="VARCHAR" property="shopTypeValue" />
+        <result column="city_company_code" jdbcType="VARCHAR" property="cityCompanyCode" />
+        <result column="city_company_value" jdbcType="VARCHAR" property="cityCompanyValue" />
+        <result column="biz_type_code" jdbcType="VARCHAR" property="bizTypeCode" />
+        <result column="biz_type_value" jdbcType="VARCHAR" property="bizTypeValue" />
+        <result column="org_id" jdbcType="BIGINT" property="orgId" />
+        <result column="biz_start_time" jdbcType="CHAR" property="bizStartTime" />
+        <result column="biz_end_time" jdbcType="CHAR" property="bizEndTime" />
+        <result column="shop_introduction" jdbcType="VARCHAR" property="shopIntroduction" />
+        <result column="tel_no" jdbcType="VARCHAR" property="telNo" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="shop_status_code" jdbcType="VARCHAR" property="shopStatusCode" />
+        <result column="shop_status_value" jdbcType="VARCHAR" property="shopStatusValue" />
+        <result column="biz_shop_status" jdbcType="INTEGER" property="bizShopStatus" />
+        <result column="lat" jdbcType="DECIMAL" property="lat" />
+        <result column="lng" jdbcType="DECIMAL" property="lng" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+        <result column="shop_old_code" jdbcType="VARCHAR" property="shopOldCode" />
+        <result column="scene_id" jdbcType="VARCHAR" property="sceneId" />
+        <result column="qr_code_ticket" jdbcType="VARCHAR" property="qrCodeTicket" />
+        <result column="modify_user_id" jdbcType="BIGINT" property="modifyUserId" />
+        <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, shop_code, shop_name, shop_shortname, app_id, province_code, province_value,
+        city_code, city_value, region_id, region_desc, biz_cell_code, biz_cell_value, shop_type_code,
+        shop_type_value, city_company_code, city_company_value, biz_type_code, biz_type_value,
+        org_id, biz_start_time, biz_end_time, shop_introduction, tel_no, address,shop_status_code,shop_status_value, biz_shop_status,
+        lat, lng, gmt_create, gmt_modified, shop_old_code, scene_id,qr_code_ticket,modify_user_id,modify_user_name
+    </sql>
+
+
+    <select id="qryShopsPageable" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from os_biz_shop_info obsi
+        where 1 = 1
+        and ( 1 = 1
+        <if test="condition.userAvlOrgIdList == null">
+            and 1 = 2
+        </if>
+
+        <if test="condition.userAvlOrgIdList!= null and condition.userAvlOrgIdList.size() > 0">
+            and
+            <foreach collection="condition.userAvlOrgIdList" item="orgs" open="(" separator="or" close=")">
+                obsi.org_id in
+                <foreach collection="orgs" item="org_id" open="(" separator="," close=")">
+                    #{org_id}
+                </foreach>
+            </foreach>
+        </if>
+        <if test="condition.orgIdList == null">
+            and 1 = 2
+        </if>
+        <if test="condition.orgIdList!= null and condition.orgIdList.size() > 0">
+            and
+            <foreach collection="condition.orgIdList" item="orgs" open="(" separator="or" close=")">
+                obsi.org_id in
+                <foreach collection="orgs" item="org_id" open="(" separator="," close=")">
+                    #{org_id}
+                </foreach>
+            </foreach>
+        </if>
+
+        <if test="condition.shopName != null">
+            and obsi.shop_name Like '%${condition.shopName}%'
+        </if>
+        <if test="condition.shopCode != null">
+            and (obsi.shop_code = #{condition.shopCode} or obsi.shop_old_code = #{condition.shopCode}  or concat('8S',obsi.shop_old_code) = #{condition.shopCode})
+        </if>
+        <if test="condition.bizShopStatus != null">
+            and obsi.biz_shop_status = #{condition.bizShopStatus}
+        </if>
+        <if test="condition.createTimeStart != null and condition.createTimeEnd !=null">
+            and obsi.gmt_create between #{condition.createTimeStart} and #{condition.createTimeEnd}
+        </if>
+        )
+        <if test="condition.noOrgShopShowFlag != null and condition.noOrgShopShowFlag == 1">
+            or obsi.org_id is null
+        </if>
+          order by gmt_modified desc
+    </select>
+</mapper>
