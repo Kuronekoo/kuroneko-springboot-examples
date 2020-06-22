@@ -1,8 +1,8 @@
-package cn.com.crv.vwop.spring.boot.support.services.impl;
+package cn.kuroneko.demos.manage.impl;
 
-import cn.com.crv.vwop.spring.boot.support.domain.RedisResult;
-import cn.com.crv.vwop.spring.boot.support.services.RedisValueService;
-import cn.com.crv.vwop.spring.boot.support.utils.GsonHelper;
+import cn.kuroneko.demos.manage.RedisValueService;
+import cn.kuroneko.demos.utils.GsonHelper;
+import cn.kuroneko.demos.vo.RedisResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang.StringUtils;

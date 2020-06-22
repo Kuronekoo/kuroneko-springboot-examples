@@ -3,7 +3,7 @@
 // (powered by Fernflower decompiler)
 //
 
-package cn.com.crv.vwop.third.oauth.common.emoji;
+package cn.kuroneko.demos.emoji.emoji;
 
 import com.github.binarywang.java.emoji.model.Emoji4Unicode;
 import com.github.binarywang.java.emoji.model.Emoji4Unicode.Category;
@@ -12,14 +12,14 @@ import com.github.binarywang.java.emoji.model.Emoji4Unicode.SubCategory;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import java.net.URL;
+import org.joda.time.Interval;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.joda.time.Interval;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class EmojiReader {
     private static final Logger logger = LoggerFactory.getLogger(EmojiReader.class);
@@ -38,7 +38,7 @@ public class EmojiReader {
             long beginTime = System.currentTimeMillis();
             XStream xstream = new XStream(new DomDriver());
             xstream.processAnnotations(Emoji4Unicode.class);
-
+//取消从github读取xml，速度太慢了，而且是先去git再读本地，坑爹啊
 //            try {
 //                emoji = (Emoji4Unicode)xstream.fromXML(new URL("https://raw.githubusercontent.com/googlei18n/emoji4unicode/master/data/emoji4unicode.xml"));
 //                logger.info("==============from url==============");

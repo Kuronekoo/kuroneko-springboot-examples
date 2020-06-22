@@ -5,5 +5,10 @@ package cn.kuroneko.demos.group.client.rest;
  * @author: kuroneko
  * @create: 2020-06-22 23:18
  **/
-public class WxClient {
+public interface WxClient {
+    /**
+     * 获取微信accessToken
+     * @return
+     */
+    String getAccessToken();
 }

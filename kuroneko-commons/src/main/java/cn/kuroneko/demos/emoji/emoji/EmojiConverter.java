@@ -1,10 +1,10 @@
-package cn.com.crv.vwop.third.oauth.common.emoji;
-
-import java.util.ArrayList;
-import java.util.List;
+package cn.kuroneko.demos.emoji.emoji;
 
 import com.github.binarywang.java.emoji.EmojiUtils;
 import com.vdurmont.emoji.EmojiParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmojiConverter {
 

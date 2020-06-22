@@ -1,11 +1,9 @@
-package cn.com.crv.pos.electric.ticket.aspect;
+package cn.kuroneko.demos.aspect;
 
-import cn.com.crv.pos.electric.ticket.annotation.ParamLogging;
-import cn.com.crv.pos.electric.ticket.service.OrderService;
+import cn.kuroneko.demos.annotation.ParamLogging;
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -26,7 +24,7 @@ import java.util.Objects;
 @Component
 public class ParamLoggingAspect {
 
-    @Pointcut("@annotation(cn.com.crv.pos.electric.ticket.annotation.ParamLogging)")
+    @Pointcut("@annotation(cn.kuroneko.demos.annotation.ParamLogging)")
     public void paramLoggingPointcut(){};
 
 

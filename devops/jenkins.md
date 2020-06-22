@@ -3,19 +3,20 @@
 安装以下插件
 git，maven
 
+jenkins主机需要与远程主机配置主机信任，以便scp传包
 ## 新建view
 选择freeStyle就可以
 填入代码的git仓库地址，账号密码，分支（例如： */develop）
 ## 脚本
 ```shell
 #设置微服务名称。后续脚本中的发布路径以及jar包均与此名称相关
-APP_NAME="vwop-member"
+APP_NAME="you_app_name"
 SP_PROFILE="-Dspring.profiles.active=sit"
 #堆内存大小
 HEAP_SETTING="-Xms512m -Xmx512m -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=512m -XX:CompressedClassSpaceSize=128m"
 
 #目标服务器名称
-TARGET_SERVER="vwop_sit_node1"
+TARGET_SERVER="your_target_server"
 TARGET_PATH=${APP_BASE_DIR}/${APP_NAME}
 
 #GC日志与dump file 设置

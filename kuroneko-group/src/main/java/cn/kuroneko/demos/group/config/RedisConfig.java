@@ -1,12 +1,12 @@
-package cn.com.crv.vwop.third.oauth.config.redis;
+package cn.kuroneko.demos.group.config;
 
-import cn.com.crv.vwop.third.oauth.config.property.RedisProperties;
-import cn.com.crv.vwop.spring.boot.support.annotations.proxy.VwopRedisProxyAopRegister;
-import cn.com.crv.vwop.spring.boot.support.services.LockService;
-import cn.com.crv.vwop.spring.boot.support.services.RedisValueService;
-import cn.com.crv.vwop.spring.boot.support.services.impl.DefaultRedisValueServiceImpl;
-import cn.com.crv.vwop.spring.boot.support.services.impl.LockServiceImpl;
+import cn.kuroneko.demos.manage.RedisValueService;
+import cn.kuroneko.demos.manage.impl.DefaultRedisValueServiceImpl;
+import cn.kuroneko.demos.properties.RedisProperties;
+import cn.kuroneko.demos.service.LockService;
+import cn.kuroneko.demos.service.impl.LockServiceImpl;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
@@ -26,6 +26,12 @@ import java.util.HashSet;
  */
 @Configuration
 public class RedisConfig {
+
+    @Bean
+    @ConfigurationProperties(prefix = "redis")
+    public RedisProperties redisProperties(){
+        return new RedisProperties();
+    }
 
     @Bean
     @SuppressWarnings("deprecation")
@@ -117,18 +123,5 @@ public class RedisConfig {
         lockService.setLockPrefix("VWOP_DEMO");
         lockService.setRedisService(redisService);
         return lockService;
-    }
-
-    /**
-     * redis annotation注册器
-     *
-     * @param redisValueService
-     * @param lockService
-     * @return
-     */
-    @Bean
-    public VwopRedisProxyAopRegister vwopRedisProxyAopRegister(RedisValueService redisValueService,
-            LockService lockService) {
-        return new VwopRedisProxyAopRegister(redisValueService, lockService);
     }
 }

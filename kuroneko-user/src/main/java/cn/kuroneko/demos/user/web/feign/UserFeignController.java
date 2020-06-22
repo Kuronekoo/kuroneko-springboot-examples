@@ -37,7 +37,7 @@ public class UserFeignController {
      */
     @GetMapping("/get")
     @ApiOperation(value = "查询用户", notes = "查询用户")
-    public UserDTO getUser(@ApiParam(value = "用户姓名", required = true)
+    public Result<UserDTO> getUser(@ApiParam(value = "用户姓名", required = true)
                                @RequestParam(value = "name",required = true) String name) throws KuronekoException {
         VerifyUtils.notBlank(name,"name",true);
 
@@ -48,9 +48,10 @@ public class UserFeignController {
             UserDO userDO = userDOS.get(0);
             UserDTO userDTO = new UserDTO();
             BeanUtils.copyProperties(userDO,userDTO);
-            return userDTO;
+            Result<UserDTO> result = ResultUtils.successResult(userDTO);
+            return result;
         }
-        return null;
+        return ResultUtils.successResult();
     }
 
     @PostMapping("/add")

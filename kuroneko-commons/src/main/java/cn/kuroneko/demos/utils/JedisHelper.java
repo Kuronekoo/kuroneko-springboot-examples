@@ -1,25 +1,61 @@
-package cn.com.crv.pos.electric.ticket.utils;
+package cn.kuroneko.demos.utils;
 
+import cn.kuroneko.demos.properties.RedisProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.JedisSentinelPool;
 import redis.clients.jedis.Pipeline;
-import redis.clients.util.Pool;
+import redis.clients.jedis.util.Pool;
 
 import java.util.*;
 
 /**
  * Created by A on 2018/1/29.
  */
-@Service
 public class JedisHelper {
 
     private final static Logger logger = LoggerFactory.getLogger(JedisHelper.class);
+    /**
+     * 只为代码不报错，RedisProperty需要手动写入或者从配置文件读取
+     */
+    private Pool<Jedis> jedisPool = redisPoolFactory(new RedisProperty());
 
-    @Autowired
-    private Pool<Jedis> jedisPool;
+    /**
+     * 装配redispool
+     * @param redisProperty
+     * @return
+     */
+    public static  Pool<Jedis> redisPoolFactory(RedisProperty redisProperty) {
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(redisProperty.getMaxTotal());
+        config.setMaxIdle(redisProperty.getMaxIdle());
+        config.setMinIdle(redisProperty.getMinIdle());//设置最小空闲数
+        config.setMaxWaitMillis(redisProperty.getMaxWaitMillis());
+        config.setTestOnBorrow(true);
+        config.setTestOnReturn(true);
+        //Idle时进行连接扫描
+        config.setTestWhileIdle(true);
+        //表示idle object evitor两次扫描之间要sleep的毫秒数
+        config.setTimeBetweenEvictionRunsMillis(30000);
+        //表示idle object evitor每次扫描的最多的对象数
+        config.setNumTestsPerEvictionRun(10);
+        //表示一个对象至少停留在idle状态的最短时间，然后才能被idle object evitor扫描并驱逐；这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义
+        config.setMinEvictableIdleTimeMillis(60000);
+
+        Set<String> sentinelSet = new HashSet<String>(redisProperty.getSentinels());
+
+        JedisSentinelPool redisPool =  new JedisSentinelPool(redisProperty.getMasterName(), sentinelSet, config);
+        //单节点
+//        JedisPool jedisPool = new JedisPool(config, host, port, timeout);
+
+        logger.info("RedisPool init...................");
+
+        return redisPool;
+    }
 
     public void setEx(String key,int seconds,String value){
         Jedis jedis = jedisPool.getResource();
@@ -207,64 +243,6 @@ public class JedisHelper {
         jedis.close();
         return rpop;
     }
-
-    /**
-     *  分布式下redis同步锁实现自增，每天24点自增清零
-     *
-     */
-    public String getListNo(String key, int tryCount) {
-        // lockKey锁名
-        // 分布式下请求唯一指 可用uuid
-        // key不存在时，进行set操作
-        // key加的过期设置
-        // 过期时间
-        Jedis jedis = jedisPool.getResource();
-        String lockKey = "somago."+key+".increment.lock";
-        String incrementKey = "somago."+key+".increment.number"; // 自增数的key
-        String requestId = UUID.randomUUID().toString();
-        String ret = null;
-        String incrNumber="";
-        int count = 0;
-        try {
-        	// 尝试50次拿锁
-        	while (ret == null && count++ < tryCount) {
-        		ret= jedis.set(lockKey, requestId, "NX", "PX", 1); // 加锁，1秒后自动释放锁
-        	}
-            if ("ok".equalsIgnoreCase(ret)) {
-                // 加上了锁
-                // TODO 自增操作
-                if (!jedis.exists(incrementKey)) {
-                    int timeInt = DateUtil.getRemainSecondsOneDay(DateUtil.getCurrentDate()); // 获得当天剩余的秒数
-                    jedis.setex(incrementKey, timeInt, "0"); // 初始为0，每天24点失效
-                }
-                jedis.incr(incrementKey);
-                incrNumber = jedis.get(incrementKey); // ** 获得自增的数
-            } else {
-                // 未加锁
-                // TODO 考虑是否重复获取锁，或者用其他方式代替自增数
-            	return null;
-            }
-        } catch (Throwable e) {
-            logger.error(e.getMessage(), e);
-        } finally {
-            if(ret.equalsIgnoreCase("ok")) {
-                // 解锁时只能由加锁的requestId来释放锁
-                String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-                Object result = jedis.eval(script, Arrays.asList(lockKey), Arrays.asList(requestId));
-                if ("ok".equalsIgnoreCase(String.valueOf(result))) {
-                    return incrNumber;
-                    // 释放了锁
-                    // TODO
-                } else {
-                    // 未释放锁
-                    // TODO 考虑是否重复释放
-                }
-            }
-            jedis.close();
-        }
-        return incrNumber;
-    }
-
 
     /**
      * 操作redis删除List中某个元素

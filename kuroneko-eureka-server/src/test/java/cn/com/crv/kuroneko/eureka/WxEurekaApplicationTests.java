@@ -1,4 +1,4 @@
-package cn.com.crv.vwop.eureka;
+package cn.com.crv.kuroneko.eureka;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

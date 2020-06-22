@@ -1,5 +1,5 @@
-package cn.com.crv.pos.electric.ticket.utils;
-import cn.com.crv.pos.electric.ticket.interfaces.EptConstrants;
+package cn.kuroneko.demos.utils;
+
 import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.Cipher;
@@ -9,7 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * AES�
- * @author yanghl
+ * @author aes对称加密
  *
  */
 @Slf4j
@@ -54,7 +54,6 @@ public class AESedeSecretUtil {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             IvParameterSpec iv = new IvParameterSpec(IV.getBytes(UTF_8));
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
-            //byte[] encrypted1 = new BASE64Decoder().decodeBuffer(strIn);
             byte[] encrypted1 = parseHexStr2Byte(strIn);
 
             byte[] original = cipher.doFinal(encrypted1);
@@ -127,16 +126,15 @@ public class AESedeSecretUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String memberid = encrypt("ept_service_encrypt_20190326", "6323241953128420386");
-        String hrt_memberid = encrypt("wjcard2017szyrgs", "7070031431041359326");
-        String hrt_openid = encrypt("wjcard2017szyrgs", "o1yl_jiliWvrRksyrEFgi3up8TzM");
-        String e2 = encrypt("ept_service_encrypt_20190326", "o1yl_jgY0iG6vW9wYHGQiai_Tehs");
+        String memberid = encrypt("_encrypt_20190326", "6323241953128420386");
+        String xx_memberid = encrypt("card2017szyrgs", "7070031431041359326");
+        String xxx_openid = encrypt("card2017szyrgs", "o1yl_jiliWvrRksyrEFgi3up8TzM");
+        String e2 = encrypt("encrypt_20190326", "o1yl_jgY0iG6vW9wYHGQiai_Tehs");
         System.out.println("memberid  "+ memberid);
         System.out.println("openid "+e2);
-        System.out.println("hrt_memberid "+hrt_memberid);
-        System.out.println("hrt_openid "+hrt_openid);
+        System.out.println("hrt_memberid "+xx_memberid);
+        System.out.println("hrt_openid "+xxx_openid);
 
-        System.out.println(decrypt("ept_service_encrypt_20190326","FBBD748B88A4505DD05F4EA9C2B160C75FCE8252373FB77FC461257097535997"));
     }
 
 

@@ -1,11 +1,10 @@
-package cn.com.crv.vwop.spring.boot.support.services.impl;
+package cn.kuroneko.demos.service.impl;
 
-import cn.com.crv.vwop.commons.CommonConstant;
-import cn.com.crv.vwop.commons.CommonResultCode;
-import cn.com.crv.vwop.commons.exception.VwopException;
-import cn.com.crv.vwop.spring.boot.support.services.LockService;
-import cn.com.crv.vwop.spring.boot.support.services.RedisValueService;
-import cn.com.crv.vwop.spring.boot.support.services.lamda.UncheckedSupplier;
+import cn.kuroneko.demos.exception.KuronekoException;
+import cn.kuroneko.demos.manage.RedisValueService;
+import cn.kuroneko.demos.service.LockService;
+import cn.kuroneko.demos.service.lamda.UncheckedSupplier;
+import cn.kuroneko.demos.vo.CommonResultCode;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.slf4j.Logger;
@@ -119,20 +118,20 @@ public class LockServiceImpl implements LockService {
     }
 
     @Override
-    public <R> R distributeLockProcess(String key, UncheckedSupplier<R> supplier) throws VwopException {
+    public <R> R distributeLockProcess(String key, UncheckedSupplier<R> supplier) throws KuronekoException {
         return distributeLockProcess(key, DEFAULT_LOCK_TIMEOUT, supplier);
     }
 
     @Override
     public <R> R distributeLockProcess(String key, int lockTimeout, UncheckedSupplier<R> supplier)
-            throws VwopException {
+            throws KuronekoException {
         if (Objects.isNull(supplier)) {
             throw new IllegalArgumentException("UncheckedSupplier should not be null.");
         }
 
         boolean locked = this.tryLockDistribute(key, lockTimeout);
         if (!locked) {
-            throw new VwopException(CommonResultCode.FORBID_PARALLEL_OPTIONS, "key: " + key);
+            throw new KuronekoException(CommonResultCode.FORBID_PARALLEL_OPTIONS, "key: " + key);
         }
         try {
             return supplier.get();

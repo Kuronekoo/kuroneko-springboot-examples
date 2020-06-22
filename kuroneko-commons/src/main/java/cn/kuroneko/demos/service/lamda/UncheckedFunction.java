@@ -1,6 +1,6 @@
-package cn.com.crv.vwop.spring.boot.support.services.lamda;
+package cn.kuroneko.demos.service.lamda;
 
-import cn.com.crv.vwop.commons.exception.VwopException;
+import cn.kuroneko.demos.exception.KuronekoException;
 
 /**
  * Represents a function that accepts one argument and produces a result.
@@ -21,7 +21,7 @@ public interface UncheckedFunction<T, R> {
      * 约定调用方法
      * @param t
      * @return
-     * @throws VwopException
+     * @throws KuronekoException
      */
-    R apply(T t) throws VwopException;
+    R apply(T t) throws KuronekoException;
 }

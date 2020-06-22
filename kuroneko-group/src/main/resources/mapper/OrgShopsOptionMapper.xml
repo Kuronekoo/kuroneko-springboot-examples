@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.crv.vwop.org.shops.dal.mapper.OrgShopsOptionMapper">
+    <!--有较多关联查询，sql较复杂，又不希望每次被geneator刷新干掉的，可以单独写一个xml-->
+    <!--
     <resultMap id="BaseResultMap" type="cn.com.crv.vwop.org.shops.dal.entity.OsBizShopInfoDO">
         <id column="id" jdbcType="BIGINT" property="id" />
         <result column="shop_code" jdbcType="VARCHAR" property="shopCode" />
@@ -100,4 +102,6 @@
         </if>
           order by gmt_modified desc
     </select>
+
+    -->
 </mapper>

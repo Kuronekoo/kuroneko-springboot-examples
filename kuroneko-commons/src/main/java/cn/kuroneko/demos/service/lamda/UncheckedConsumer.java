@@ -1,6 +1,7 @@
-package cn.com.crv.vwop.spring.boot.support.services.lamda;
+package cn.kuroneko.demos.service.lamda;
 
 import cn.com.crv.vwop.commons.exception.VwopException;
+import cn.kuroneko.demos.exception.KuronekoException;
 
 import java.util.Objects;
 
@@ -24,9 +25,9 @@ public interface UncheckedConsumer<T> {
      * Performs this operation on the given argument.
      *
      * @param t the input argument
-     * @throws VwopException
+     * @throws KuronekoException
      */
-    void accept(T t) throws VwopException;
+    void accept(T t) throws KuronekoException;
 
     /**
      * Returns a composed {@code Consumer} that performs, in sequence, this

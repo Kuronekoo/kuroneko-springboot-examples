@@ -5,9 +5,9 @@ spring:
     config:
       server:
         git:
-          uri: https://gitlab.crv.com.cn/VWOP/vwop-application-config.git
-          username: crv_vwop@crv.com.cn
-          password: Vwop20191125
+          uri: dev_git_lab_uri
+          username: dev_git_lab_u
+          password: dev_git_lab_p
           default-label: dev
           search-paths: config
 

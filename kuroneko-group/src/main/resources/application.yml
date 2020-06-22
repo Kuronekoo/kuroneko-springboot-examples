@@ -43,4 +43,30 @@ eureka:
     #【默认为30秒】eureka客户端间隔多久去拉取服务注册信息
     registry-fetch-interval-seconds: 3
 server:
-  port: 18103
+  port: 18104
+
+kuroneko:
+  http:
+    # 读数据流的超时时间， 单位秒
+    read-timeout: 30
+    # 连接超时时间， 单位秒
+    connection-timeout: 60
+    #使用代理配置
+    enable-proxy: true
+    #代理地址
+    proxy-host: 127.0.0.1
+    #代理端口
+    proxy-port: 3128
+    #总体最大并发请求数
+    max-requests: 3000
+    #每个地址的最大并发请求数
+    max-requests-per-host: 1000
+    #不使用代理的地址，支持*通配
+    non-proxy-hosts:
+    - '10.*'
+    - 'localhost'
+    - '127.*'
+    - '::1'
+    - '0.0.0.0'
+    - '::0'
+    - 'api.weixin.qq.com'

@@ -1,4 +1,4 @@
-package cn.com.crv.vwop.config;
+package cn.com.crv.kuroneko.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

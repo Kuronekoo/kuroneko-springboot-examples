@@ -1,6 +1,6 @@
-package cn.com.crv.vwop.spring.boot.support.services;
+package cn.kuroneko.demos.manage;
 
-import cn.com.crv.vwop.spring.boot.support.domain.RedisResult;
+import cn.kuroneko.demos.vo.RedisResult;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
@@ -81,14 +81,14 @@ public interface RedisValueService {
      * @param latitude
      * @param member
      */
-    void geoAdd(String key,double longitude,double latitude,String member);
+    void geoAdd(String key, double longitude, double latitude, String member);
 
     /**
      * 用Map形式新增N个地理位置数据
      * @param key
      * @param map
      */
-    void geoAddMap(String key,Map<String, Point> map);
+    void geoAddMap(String key, Map<String, Point> map);
 
     /**
      * 以longitude和latitude维中心点，查找最近distance的地理位置，限制数量为count
@@ -101,7 +101,7 @@ public interface RedisValueService {
      * @return
      */
     GeoResults<RedisGeoCommands.GeoLocation<String>> geoRadius(String key, double longitude, double latitude,
-                                                               double distance, Metrics metrics,long count);
+                                                               double distance, Metrics metrics, long count);
 
     /**
      * 获取一个地理位置数据
@@ -109,7 +109,7 @@ public interface RedisValueService {
      * @param member
      * @return
      */
-    List<Point> geoGet(String key ,String member);
+    List<Point> geoGet(String key, String member);
 
     /**
      * 根据key取数据
@@ -172,7 +172,7 @@ public interface RedisValueService {
      * @param timeUnit
      */
     void set(ValueOperations<String, String> valueOperations, String key, String value, long timeout,
-            TimeUnit timeUnit);
+             TimeUnit timeUnit);
 
     /**
      * 仅当redis中不含对应的key时，设定缓存内容

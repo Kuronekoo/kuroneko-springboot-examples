@@ -1,11 +1,12 @@
-package cn.com.crv.pos.electric.ticket.utils;
+package cn.kuroneko.demos.utils;
 
-import org.apache.commons.codec.binary.Base64;
+
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
+import java.util.Base64;
 
 public class DesUtils {
 
@@ -30,7 +31,7 @@ public class DesUtils {
 	 */
 	public static String encrypt(String src, String key) throws Exception {
 		byte[] data = src.getBytes(DEFAULT_CHARSET);
-		String result = new String(Base64.encodeBase64(encrypt(data, key)), DEFAULT_CHARSET);
+		String result = new String(Base64.getEncoder().encode(encrypt(data, key)), DEFAULT_CHARSET);
 		return replace(result, true);
 	}
 
@@ -65,7 +66,7 @@ public class DesUtils {
 	public static String decrypt(String data, String key) throws Exception {
 		try {
 			data = replace(data, false);
-			return new String(decrypt(Base64.decodeBase64(data), key), DEFAULT_CHARSET);
+			return new String(decrypt(Base64.getDecoder().decode(data), key), DEFAULT_CHARSET);
 		} catch (Exception e) {
 			throw new RuntimeException("签名错误,请检查参数");
 		}
@@ -74,8 +75,8 @@ public class DesUtils {
 	/**
 	 * 解密
 	 * 
-	 * @param src
-	 * @param sKey
+	 * @param data
+	 * @param key
 	 * @return
 	 * @throws Exception
 	 */
@@ -97,8 +98,8 @@ public class DesUtils {
 	/**
 	 * 字符替换,替换链接中不允许字符;
 	 *
-	 * @param Str密文
-	 * @param flag标识正向替换或者反向替换
+	 * @param str 密文
+	 * @param flag 标识正向替换或者反向替换
 	 * @return 解密后密码
 	 */
 	private static String replace(String str, boolean flag) {
@@ -107,6 +108,16 @@ public class DesUtils {
 		} else {
 			return str.replaceAll("\\*", "+").replaceAll("\\:", "/").replaceAll("\\_", "=");
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		/**
+		 * des加密的key长度需要大于24位
+		 */
+		System.out.println("kuroneko_des_en_de_crypt_key_lent_should_longger_than_24".length());
+		String encrypt = encrypt("xxxxxx", "kuroneko_des_en_de_crypt_key_lent_should_longger_than_24");
+		System.out.println(encrypt);
+
 	}
 
 }

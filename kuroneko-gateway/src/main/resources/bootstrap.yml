@@ -85,21 +85,21 @@ spring:
               - POST
         # 组织服务
         - uri: lb://KURONEKO-GROUP
-            predicates:
-            - Path=/group/**
-            filters:
-            - StripPrefix=1
-            # 重试过滤器
-            - name: Retry
-              args:
-                # 重试次数，默认值是 3 次
-                retries: 3
-                # HTTP 的状态返回码，取值请参考：org.springframework.http.HttpStatus
-                statuses: BAD_GATEWAY
-                # 指定哪些方法的请求需要进行重试逻辑，默认值是 GET 方法，取值参考：org.springframework.http.HttpMethod
-                methods:
-                - GET
-                - POST
+          predicates:
+          - Path=/group/**
+          filters:
+          - StripPrefix=1
+          # 重试过滤器
+          - name: Retry
+            args:
+              # 重试次数，默认值是 3 次
+              retries: 3
+              # HTTP 的状态返回码，取值请参考：org.springframework.http.HttpStatus
+              statuses: BAD_GATEWAY
+              # 指定哪些方法的请求需要进行重试逻辑，默认值是 GET 方法，取值参考：org.springframework.http.HttpMethod
+              methods:
+              - GET
+              - POST
 
 
 biz-logging:

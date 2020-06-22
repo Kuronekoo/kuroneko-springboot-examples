@@ -1,4 +1,4 @@
-package cn.com.crv.vwop.config;
+package cn.com.crv.kuroneko.config;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,6 +1,8 @@
-package cn.kuroneko.demos.manage;
+package cn.kuroneko.demos.service;
 
-import cn.com.crv.vwop.spring.boot.support.services.lamda.UncheckedSupplier;
+
+import cn.kuroneko.demos.exception.KuronekoException;
+import cn.kuroneko.demos.service.lamda.UncheckedSupplier;
 
 /**
  * 分布式锁服务
@@ -86,9 +88,9 @@ public interface LockService {
      * @param supplier 业务逻辑
      * @param <R>      返回值的参数类型
      * @return
-     * @throws VwopException
+     * @throws KuronekoException
      */
-    <R> R distributeLockProcess(String key, UncheckedSupplier<R> supplier) throws VwopException;
+    <R> R distributeLockProcess(String key, UncheckedSupplier<R> supplier) throws KuronekoException;
 
     /**
      * 在分布式锁中执行逻辑 FAST FAILED
@@ -98,8 +100,8 @@ public interface LockService {
      * @param supplier    业务逻辑
      * @param <R>         返回值的参数类型
      * @return
-     * @throws VwopException
+     * @throws KuronekoException
      */
-    <R> R distributeLockProcess(String key, int lockTimeout, UncheckedSupplier<R> supplier) throws VwopException;
+    <R> R distributeLockProcess(String key, int lockTimeout, UncheckedSupplier<R> supplier) throws KuronekoException;
 
 }

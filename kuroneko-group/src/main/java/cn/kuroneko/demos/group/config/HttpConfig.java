@@ -1,8 +1,9 @@
-package cn.com.crv.vwop.member.config.http;
+package cn.kuroneko.demos.group.config;
 
-import cn.com.crv.vwop.commons.config.HttpClientProperty;
-import cn.com.crv.vwop.commons.threads.NamedBasicThreadFactory;
-import cn.com.crv.vwop.spring.boot.support.utils.VwopRestTemplateUtils;
+import cn.kuroneko.demos.properties.HttpClientProperty;
+import cn.kuroneko.demos.threads.NamedBasicThreadFactory;
+import cn.kuroneko.demos.utils.HttpUtils;
+import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -36,12 +37,12 @@ public class HttpConfig {
         ExecutorService executor = new ThreadPoolExecutor(4,
                 Runtime.getRuntime().availableProcessors() + 4, 1, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<Runnable>(),
-                new NamedBasicThreadFactory());
+                new NamedBasicThreadFactory("HTTP-POOL"));
         return new TraceableExecutorService(this.beanFactory, executor);
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "vwop.http")
+    @ConfigurationProperties(prefix = "kuroneko.http")
     public HttpClientProperty httpClientProperty() {
         return new HttpClientProperty();
     }
@@ -49,7 +50,12 @@ public class HttpConfig {
     @Bean
     public RestTemplate restTemplate(HttpClientProperty httpClientProperty,
             TraceableExecutorService traceableExecutorService) {
-        return VwopRestTemplateUtils
+        return HttpUtils
                 .generateConfiguredRestTemplateWith(restTemplateBuilder, httpClientProperty, traceableExecutorService);
+    }
+
+    @Bean
+    public OkHttpClient okHttpClient(HttpClientProperty httpClientProperty){
+        return HttpUtils.okHttpClient(httpClientProperty);
     }
 }

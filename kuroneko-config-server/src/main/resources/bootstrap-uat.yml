@@ -1,13 +1,13 @@
 spring:
   application:
-    name: vwop-config-server
+    name: kuroneko-config-server
   cloud:
     config:
       server:
         git:
-          uri: https://gitlab.crv.com.cn/VWOP/vwop-application-config.git
-          username: crv_vwop@crv.com.cn
-          password: Vwop20191125
+          uri: uat_git_lab_g
+          username: uat_git_lab_u
+          password: uat_git_lab_p
           default-label: uat
           search-paths: config
 
@@ -24,7 +24,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://10.239.161.14/eureka/
+      defaultZone: http://uat_eureka_host/eureka/
     #【默认为30秒】eureka客户端间隔多久去拉取服务注册信息
     registry-fetch-interval-seconds: 3
 

@@ -1,6 +1,7 @@
-package cn.com.crv.vwop.spring.boot.support.services.lamda;
+package cn.kuroneko.demos.service.lamda;
 
-import cn.com.crv.vwop.commons.exception.VwopException;
+
+import cn.kuroneko.demos.exception.KuronekoException;
 
 /**
  * Represents a supplier of results.
@@ -23,5 +24,5 @@ public interface UncheckedSupplier<T> {
      *
      * @return a result
      */
-    T get() throws VwopException;
+    T get() throws KuronekoException;
 }

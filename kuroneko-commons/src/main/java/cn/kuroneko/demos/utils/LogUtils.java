@@ -1,4 +1,4 @@
-package cn.com.crv.pos.electric.ticket.utils;
+package cn.kuroneko.demos.utils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
@@ -8,7 +8,7 @@ import java.util.Enumeration;
 /**
  * 日志处理工具类
  *
- * @author fuxiao9@crv.com.cn
+ * @author
  * 2016/9/14.
  */
 public class LogUtils {
