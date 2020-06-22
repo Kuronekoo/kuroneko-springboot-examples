@@ -1,0 +1,149 @@
+server:
+  port: 18002
+spring:
+  application:
+    name: kuroneko-gateway
+  cloud:
+#    config:
+#      discovery:
+#        enabled: true
+#        service-id: kuroneko-config-server
+#      name: ${spring.application.name}
+    gateway:
+      discovery:
+        locator:
+          # 是否与服务注册于发现组件进行结合，默认为false
+          # 开启后可以通过网关+服务名访问，例如订单服务名为kuroneko-user
+          # 访问方式为 http://127.0.0.1:17998/KURONEKO-USER/hello
+          # 而且访问的时候会自动进行负载均衡
+          enabled: true
+          lower-case-service-id: true
+          # 默认过滤器
+      default-filters:
+        - name: Hystrix
+          args:
+            name: default
+            # 全局的失败熔断处理，默认在失败之后转发到/fallback
+            fallbackUri: forward:/fallback
+      routes:
+        - id: forbidden_route
+          # 将请求转发到以下地址，lb://的意思是负载均衡
+          # 使用了全局过滤器 LoadBalancerClient,当路由配置中 uri 所用的协议为 lb 时,
+          # gateway 将使用 LoadBalancerClient 把 kuroneko-gateway 通过 eureka 解析为实际的主机和端口，并进行负载均衡。
+#          uri: lb://kuroneko-gateway/error.html
+          uri: lb://kuroneko-gateway/error.html
+          # 在请求路径满足以下断言时候，转发访问访问上面uri中的内容
+          predicates:
+            - Path=/user/feign/**,/order/feign/**
+          # 过滤设置请*求code为404
+          filters:
+            - name: SetStatus
+              args:
+                status: 404
+    # 会员服务
+        - id: kuronkeo-user
+          uri: lb://KURONEKO-USER
+          predicates:
+            # 访问路径中从/user开头的转发负载均衡到KURONEKO-USER服务
+            # 这个在gateway中可以自定义，比如叫gateway-user什么的都可以
+            - Path=/user/**
+            # 去掉路径中的第一层，2就是去掉第二，这里是1，即去掉/user之后转发请求
+            # 举例 ： 访问http://127.0.0.1:17998/user/KURONEKO-USER/hello 实际访问的是 http://127.0.0.1:17998/KURONEKO-USER/hello
+          filters:
+            - StripPrefix=1
+            # 熔断也可以在每个服务的过滤器中定义
+            - name: Hystrix
+              args:
+                name: default
+                fallbackUri: forward:/fallback
+            - name: Retry
+              args:
+                  # 重试次数，默认值是 3 次
+                  retries: 3
+                  # HTTP 的状态返回码，取值请参考：org.springframework.http.HttpStatus
+                  statuses: BAD_GATEWAY
+                  # 指定哪些方法的请求需要进行重试逻辑，默认值是 GET 方法，取值参考：org.springframework.http.HttpMethod
+                  methods:
+                  - GET
+                  - POST
+      # 订单服务
+        - uri: lb://KURONEKO-ORDER
+          predicates:
+          - Path=/order/**
+          filters:
+          - StripPrefix=1
+          # 重试过滤器
+          - name: Retry
+            args:
+              # 重试次数，默认值是 3 次
+              retries: 3
+              # HTTP 的状态返回码，取值请参考：org.springframework.http.HttpStatus
+              statuses: BAD_GATEWAY
+              # 指定哪些方法的请求需要进行重试逻辑，默认值是 GET 方法，取值参考：org.springframework.http.HttpMethod
+              methods:
+              - GET
+              - POST
+        # 组织服务
+        - uri: lb://KURONEKO-GROUP
+            predicates:
+            - Path=/group/**
+            filters:
+            - StripPrefix=1
+            # 重试过滤器
+            - name: Retry
+              args:
+                # 重试次数，默认值是 3 次
+                retries: 3
+                # HTTP 的状态返回码，取值请参考：org.springframework.http.HttpStatus
+                statuses: BAD_GATEWAY
+                # 指定哪些方法的请求需要进行重试逻辑，默认值是 GET 方法，取值参考：org.springframework.http.HttpMethod
+                methods:
+                - GET
+                - POST
+
+
+biz-logging:
+  path: ./logs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health,info
+
+### ribbon 配置 ###
+ribbon:
+  ConnectTimeout: 30000
+  ReadTimeout: 50000
+  #同一台实例最大重试次数,不包括首次调用
+  MaxAutoRetries: 2
+  #重试负载均衡其他的实例最大重试次数,不包括首次调用
+  MaxAutoRetriesNextServer: 1
+  #【默认30秒】ribbon client本身缓存了信息
+  ServerListRefreshInterval: 3000
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 2000
+      maximumSize: 20000
+      allowMaximumSizeToDivergeFromCoreSize: true
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: 'THREAD'
+          thread:
+            timeoutInMilliseconds: 8000
+
+
+### eureka 配置 ###  注意：使用config-server拉取配置时， eureka需要配置在 bootstrap.yml文件， 以通过eureka获取config-server的访问路径
+eureka:
+  instance:
+    #【默认为false】优先使用内网IP，避免配置本地host
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:18001/eureka/
+    #【默认为30秒】eureka客户端间隔多久去拉取服务注册信息
+    registry-fetch-interval-seconds: 3

@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: kuroneko-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitlab.crv.com.cn/VWOP/vwop-application-config.git
+          username: crv_vwop@crv.com.cn
+          password: Vwop20191125
+          default-label: dev
+          search-paths: config
+
+server:
+  port: 18000
+  tomcat:
+    max-connections: 2000
+    accept-count: 500
+    max-threads: 300
+
+### eureka 配置 ###
+eureka:
+  instance:
+    #【默认为false】优先使用内网IP，避免配置本地host
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:18001/eureka/
+    #【默认为30秒】eureka客户端间隔多久去拉取服务注册信息
+    registry-fetch-interval-seconds: 3
+
+biz-logging:
+  path: ./logs

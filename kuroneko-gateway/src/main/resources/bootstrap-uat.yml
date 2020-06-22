@@ -1,0 +1,30 @@
+server:
+  port: 17998
+spring:
+  application:
+    name: vwop-gateway-msg
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: vwop-config-server
+      name: ${spring.application.name}
+
+
+
+biz-logging:
+  path: ./logs
+
+
+### eureka 配置 ###  注意：使用config-server拉取配置时， eureka需要配置在 bootstrap.yml文件， 以通过eureka获取config-server的访问路径
+eureka:
+  instance:
+    #【默认为false】优先使用内网IP，避免配置本地host
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server-node1:8001/eureka/,http://eureka-server-node2:8001/eureka/,http://eureka-server-node3:8001/eureka/
+    #【默认为30秒】eureka客户端间隔多久去拉取服务注册信息
+    registry-fetch-interval-seconds: 3
+
+

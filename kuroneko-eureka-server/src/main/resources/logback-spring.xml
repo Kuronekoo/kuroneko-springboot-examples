@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 获取 application.yml / bootstrap.yml 中的配置-->
+    <springProperty scope="context" name="BIZ_LOG_PATH" source="biz-logging.path"/>
+    <springProperty scope="context" name="LOG_FILE_NAME" source="spring.application.name"/>
+
+    <!-- 日志格式及保存时间 -->
+    <property name="MAX_HISTORY" value="7"/>
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [tracerId:%X{X-B3-TraceId:-}] [%thread] %-5level %logger{50}:%L - %msg%n"/>
+
+    <!--web信息-->
+    <logger name="org.springframework.web" level="info"/>
+
+
+    <appender name="CONSOLE_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 日志文件的appender -->
+    <appender name="FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${BIZ_LOG_PATH}/${LOG_FILE_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${BIZ_LOG_PATH}/${LOG_FILE_NAME}.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>${LOG_PATTERN}</Pattern>
+        </layout>
+    </appender>
+
+
+
+    <root level="warn">
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="FILE_APPENDER"/>
+    </root>
+
+
+</configuration>

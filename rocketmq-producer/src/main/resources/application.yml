@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: rocketmq-producer
+rocketmq:
+  name-servers:
+  - '127.0.0.1:9876'
+  namespace: 'local'
+  producer-group: 'PID-LOCAL-${spring.application.name}'
+  consumer-group: 'CID-LOCAL-${spring.application.name}'
+server:
+  port: 8025

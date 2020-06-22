@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: kuroneko-group
+    # 配置中心 本地开发可以不使用
+  cloud:
+#    config:
+#      discovery:
+#        enabled: true
+#        service-id: vwop-config-server
+#      name: ${spring.application.name}
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/test_db?characterEncoding=utf8&serverTimezone=GMT%2B8
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+      max-active: 5
+      min-idle: 1
+      validation-query: 'select 1'
+      test-on-borrow: false
+      test-on-return: true
+      test-while-idle: true
+      filter:
+        slf4j:
+          enabled: true
+          statement-create-after-log-enabled: false
+          statement-close-after-log-enabled: false
+          result-set-open-after-log-enabled: false
+          result-set-close-after-log-enabled: false
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    default-statement-timeout: 5
+
+### eureka 配置 ###  注意：使用config-server拉取配置时， eureka需要配置在 bootstrap.yml文件， 以通过eureka获取config-server的访问路径
+eureka:
+  instance:
+    #【默认为false】优先使用内网IP，避免配置本地host
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:18001/eureka/
+    #【默认为30秒】eureka客户端间隔多久去拉取服务注册信息
+    registry-fetch-interval-seconds: 3
+server:
+  port: 18103
