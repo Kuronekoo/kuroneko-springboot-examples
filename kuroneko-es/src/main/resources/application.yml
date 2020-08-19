@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: kuroneko-es
+  elasticsearch:
+    jest:
+      uris:
+      - http://127.0.0.1:9200
+      maxConnectionCnt: 300
+      defaultMaxTotalConnectionPerRoute: 300
+      maxIdleTimeSeconds: 300
+    rest:
+      uris:
+      - http://127.0.0.1:9200
+  data:
+    elasticsearch:
+      cluster-name:
+      cluster-nodes:

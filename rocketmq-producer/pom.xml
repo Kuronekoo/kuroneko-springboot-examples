@@ -3,17 +3,53 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>cn.kuroneko.demos</groupId>
-        <artifactId>customize-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.4.RELEASE</version>
+        <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <groupId>cn.kuroneko.demos</groupId>
     <artifactId>rocketmq-producer</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+        <mysql.version>8.0.16</mysql.version>
+        <guava.version>23.0</guava.version>
+        <druid.version>1.1.10</druid.version>
+        <springfox.swagger.version>2.9.2</springfox.swagger.version>
+        <lombok.version>1.18.0</lombok.version>
+        <pageHelper.version>1.2.10</pageHelper.version>
+        <mybatis.springboot.version>2.0.0</mybatis.springboot.version>
+        <apache.commons.lang3.version>3.6</apache.commons.lang3.version>
+        <apache.commons-io.version>2.4</apache.commons-io.version>
+        <apache.commons-collections.version>3.2.2</apache.commons-collections.version>
+        <apache.httpclient.version>4.5.8</apache.httpclient.version>
+        <vwop-commons.version>1.0-SNAPSHOT</vwop-commons.version>
+        <rocketMQ.version>4.5.2</rocketMQ.version>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
+        <!--rocketmq-->
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-client</artifactId>
+            <version>4.7.0</version>
         </dependency>
     </dependencies>
 

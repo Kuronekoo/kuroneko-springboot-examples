@@ -1,7 +1,7 @@
 package cn.com.crv.vwop.gateway.msg.web.rest;
 
-import cn.kuroneko.demos.vo.Result;
-import cn.kuroneko.demos.utils.ResultUtils;
+import cn.kuroneko.demos.commons.vo.Result;
+import cn.kuroneko.demos.commons.utils.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

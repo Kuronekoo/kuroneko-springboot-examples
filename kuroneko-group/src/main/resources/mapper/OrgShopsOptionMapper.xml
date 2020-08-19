@@ -3,26 +3,11 @@
 <mapper namespace="cn.com.crv.vwop.org.shops.dal.mapper.OrgShopsOptionMapper">
     <!--有较多关联查询，sql较复杂，又不希望每次被geneator刷新干掉的，可以单独写一个xml-->
     <!--
-    <resultMap id="BaseResultMap" type="cn.com.crv.vwop.org.shops.dal.entity.OsBizShopInfoDO">
+    <resultMap id="BaseResultMap" type="cn.com.kuroneko.org.shops.dal.entity.ShopDO">
         <id column="id" jdbcType="BIGINT" property="id" />
         <result column="shop_code" jdbcType="VARCHAR" property="shopCode" />
         <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
         <result column="shop_shortname" jdbcType="VARCHAR" property="shopShortname" />
-        <result column="app_id" jdbcType="VARCHAR" property="appId" />
-        <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
-        <result column="province_value" jdbcType="VARCHAR" property="provinceValue" />
-        <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
-        <result column="city_value" jdbcType="VARCHAR" property="cityValue" />
-        <result column="region_id" jdbcType="VARCHAR" property="regionId" />
-        <result column="region_desc" jdbcType="VARCHAR" property="regionDesc" />
-        <result column="biz_cell_code" jdbcType="VARCHAR" property="bizCellCode" />
-        <result column="biz_cell_value" jdbcType="VARCHAR" property="bizCellValue" />
-        <result column="shop_type_code" jdbcType="VARCHAR" property="shopTypeCode" />
-        <result column="shop_type_value" jdbcType="VARCHAR" property="shopTypeValue" />
-        <result column="city_company_code" jdbcType="VARCHAR" property="cityCompanyCode" />
-        <result column="city_company_value" jdbcType="VARCHAR" property="cityCompanyValue" />
-        <result column="biz_type_code" jdbcType="VARCHAR" property="bizTypeCode" />
-        <result column="biz_type_value" jdbcType="VARCHAR" property="bizTypeValue" />
         <result column="org_id" jdbcType="BIGINT" property="orgId" />
         <result column="biz_start_time" jdbcType="CHAR" property="bizStartTime" />
         <result column="biz_end_time" jdbcType="CHAR" property="bizEndTime" />
@@ -36,19 +21,14 @@
         <result column="lng" jdbcType="DECIMAL" property="lng" />
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
-        <result column="shop_old_code" jdbcType="VARCHAR" property="shopOldCode" />
-        <result column="scene_id" jdbcType="VARCHAR" property="sceneId" />
-        <result column="qr_code_ticket" jdbcType="VARCHAR" property="qrCodeTicket" />
         <result column="modify_user_id" jdbcType="BIGINT" property="modifyUserId" />
         <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, shop_code, shop_name, shop_shortname, app_id, province_code, province_value,
-        city_code, city_value, region_id, region_desc, biz_cell_code, biz_cell_value, shop_type_code,
-        shop_type_value, city_company_code, city_company_value, biz_type_code, biz_type_value,
+        id, shop_code, shop_name, shop_shortname,
         org_id, biz_start_time, biz_end_time, shop_introduction, tel_no, address,shop_status_code,shop_status_value, biz_shop_status,
-        lat, lng, gmt_create, gmt_modified, shop_old_code, scene_id,qr_code_ticket,modify_user_id,modify_user_name
+        lat, lng, gmt_create, gmt_modified,modify_user_id,modify_user_name
     </sql>
 
 

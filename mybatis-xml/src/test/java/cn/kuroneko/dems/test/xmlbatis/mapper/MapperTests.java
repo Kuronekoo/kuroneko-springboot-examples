@@ -1,8 +1,8 @@
 package cn.kuroneko.dems.test.xmlbatis.mapper;
 
-import cn.kuroneko.demos.xmlbatis.entity.UserDO;
-import cn.kuroneko.demos.xmlbatis.entity.UserDOExample;
-import cn.kuroneko.demos.xmlbatis.mapper.UserDOMapper;
+import cn.kuroneko.demos.commons.xmlbatis.entity.UserDO;
+import cn.kuroneko.demos.commons.xmlbatis.entity.UserDOExample;
+import cn.kuroneko.demos.commons.xmlbatis.mapper.UserDOMapper;
 import cn.kuroneko.dems.test.xmlbatis.XmlBatisTestApp;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

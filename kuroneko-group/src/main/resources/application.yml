@@ -70,3 +70,20 @@ kuroneko:
     - '0.0.0.0'
     - '::0'
     - 'api.weixin.qq.com'
+redis:
+  # 默认是true，即使用哨兵模式，但本地用单点，所以就false了
+  use-sentinel-cluster: false
+  # 单点的hos和端口
+  standalone-host: 127.0.0.1
+  standalone-port: 6379
+  # 本地随便设置了一个密码
+  password: 'local'
+  # 这里哨兵配置不起作用
+  sentinel-hosts:
+  - '127.0.0.1:26379'
+  - '127.0.0.1:26379'
+  - '127.0.0.1:26379'
+  master-name: 'kuroneko'
+  test-on-borrow: true
+  max-total: 400
+  database: 0

@@ -93,6 +93,12 @@
             <version>0.1.1</version>
         </dependency>
         <!-- ******************************************* 以上为emoji处理依赖 ******************************************* -->
+
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+            <version>4.7.0</version>
+        </dependency>
     </dependencies>
 
 </project>

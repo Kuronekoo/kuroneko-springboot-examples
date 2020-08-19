@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.kuroneko.demos.user.mapper.OrderDOMapper">
-    <resultMap id="BaseResultMap" type="cn.kuroneko.demos.user.entity.OrderDO">
+<mapper namespace="cn.kuroneko.demos.commons.user.mapper.OrderDOMapper">
+    <resultMap id="BaseResultMap" type="cn.kuroneko.demos.commons.user.entity.OrderDO">
         <id column="id" jdbcType="BIGINT" property="id" />
         <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
         <result column="description" jdbcType="VARCHAR" property="description" />
@@ -72,7 +72,7 @@
         id, order_number, description, create_time
     </sql>
 
-    <select id="selectByExample" parameterType="cn.kuroneko.demos.user.entity.OrderDOExample" resultMap="BaseResultMap">
+    <select id="selectByExample" parameterType="cn.kuroneko.demos.commons.user.entity.OrderDOExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
             distinct
@@ -99,14 +99,14 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <delete id="deleteByExample" parameterType="cn.kuroneko.demos.user.entity.OrderDOExample">
+    <delete id="deleteByExample" parameterType="cn.kuroneko.demos.commons.user.entity.OrderDOExample">
         delete from t_order
         <if test="_parameter != null">
             <include refid="Example_Where_Clause" />
         </if>
     </delete>
 
-    <insert id="insert" parameterType="cn.kuroneko.demos.user.entity.OrderDO">
+    <insert id="insert" parameterType="cn.kuroneko.demos.commons.user.entity.OrderDO">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -116,7 +116,7 @@
             )
     </insert>
 
-    <insert id="insertSelective" parameterType="cn.kuroneko.demos.user.entity.OrderDO">
+    <insert id="insertSelective" parameterType="cn.kuroneko.demos.commons.user.entity.OrderDO">
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -145,7 +145,7 @@
         </trim>
     </insert>
 
-    <select id="countByExample" parameterType="cn.kuroneko.demos.user.entity.OrderDOExample" resultType="java.lang.Long">
+    <select id="countByExample" parameterType="cn.kuroneko.demos.commons.user.entity.OrderDOExample" resultType="java.lang.Long">
         select count(*) from t_order
         <if test="_parameter != null">
             <include refid="Example_Where_Clause" />
@@ -173,7 +173,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="cn.kuroneko.demos.user.entity.OrderDO">
+    <update id="updateByPrimaryKeySelective" parameterType="cn.kuroneko.demos.commons.user.entity.OrderDO">
         update t_order
         <set>
             <if test="orderNumber != null">

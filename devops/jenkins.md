@@ -8,6 +8,7 @@ jenkins主机需要与远程主机配置主机信任，以便scp传包
 选择freeStyle就可以
 填入代码的git仓库地址，账号密码，分支（例如： */develop）
 ## 脚本
+shell
 ```shell
 #设置微服务名称。后续脚本中的发布路径以及jar包均与此名称相关
 APP_NAME="you_app_name"
@@ -81,4 +82,54 @@ ssh -tt root@$TARGET_SERVER << EOF
  
  exit 0
 EOF
+```
+
+docker file
+```file
+
+FROM 10.249.12.47/vwop/vwop-tomcat:v4
+
+# eureka url
+ENV service_springcloud_eureka="http://dc-eureka-server-master:8001/eureka/,http://dc-eureka-server-backup:8001/eureka/,http://dc-eureka-server-slave:8001/eureka/"
+
+
+# jvm
+ENV APP_BASE_DIR=/logs
+ENV APP_NAME
+ENV SP_PROFILE="-Dspring.profiles.active=prod"
+
+#堆内存大小
+ENV HEAP_SETTING="-Xms4g -Xmx4g -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=1g -XX:CompressedClassSpaceSize=512m"
+
+ENV TARGET_PATH=${APP_BASE_DIR}/${APP_NAME}
+#GC日志与dump file 设置
+ENV GC_LOG_BASE_PATH=${TARGET_PATH}/gclogs
+ENV GC_LOG=${GC_LOG_BASE_PATH}/gc.log
+ENV DUMP_FILE=${GC_LOG_BASE_PATH}/${APP_NAME}.dump
+ENV JAVA_OPTS="${HEAP_SETTING} -XX:NewRatio=1 -XX:+UseConcMarkSweepGC \
+ -XX:+CMSClassUnloadingEnabled -XX:CMSMaxAbortablePrecleanTime=5000 -XX:CMSInitiatingOccupancyFraction=80 -XX:+UseCompressedOops \
+ -XX:+DisableExplicitGC -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${DUMP_FILE} -verbose:gc \
+ -Xloggc:${GC_LOG} -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Djava.awt.headless=true \
+ -Dsun.net.client.defaultConnectTimeout=60000 \
+ -Djava.awt.headless=true"
+
+#oneapm 
+#ENV TIER_NAME='NONE'  APP_NAME='VWOP'
+
+#scriptes
+ADD entrypoint.sh /entrypoint.sh
+
+
+# add jar
+ADD target/vwop.jar app.jar
+
+# cp time zone
+RUN \cp -f /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime && chmod +x /entrypoint.sh
+
+# jenkins replace port
+EXPOSE 8080
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+
 ```

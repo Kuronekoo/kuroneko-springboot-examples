@@ -1,10 +1,10 @@
 package test.db;
 
-import cn.kuroneko.demos.jpa.entity.Group;
-import cn.kuroneko.demos.jpa.entity.User;
-import cn.kuroneko.demos.jpa.repository.GroupRepsitory;
-import cn.kuroneko.demos.jpa.repository.UserRepository;
-import cn.kuroneko.demos.jpa.specification.MySpecification;
+import cn.kuroneko.demos.commons.jpa.entity.Group;
+import cn.kuroneko.demos.commons.jpa.entity.User;
+import cn.kuroneko.demos.commons.jpa.repository.GroupRepsitory;
+import cn.kuroneko.demos.commons.jpa.repository.UserRepository;
+import cn.kuroneko.demos.commons.jpa.specification.MySpecification;
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import org.junit.Test;
